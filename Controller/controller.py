@@ -47,8 +47,25 @@ def screen_display(main_conn, main_addr):
         canvas1 = Canvas(window, width = width, height = height) 
         canvas1.pack(fill = "both", expand = True) 
 
-        while True:
-            pass
+        sharing = True
+
+        while sharing:
+            img_size = conn.recv(100).decode(FORMAT)
+            img_size = int(img_size)
+
+            data = b''
+            while len(data) < img_size:
+                packet = conn.recv(1024)
+                if not packet:
+                    break
+                data += packet
+
+            
+            img = ImageTk.PhotoImage(Image.open(io.BytesIO(data)))
+            canvas1.create_image(0, 0, image = img, anchor = 'nw')
+            print("opend img")
+
+            sharing = False
 
         window.mainloop()
         

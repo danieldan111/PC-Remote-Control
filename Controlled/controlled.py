@@ -69,7 +69,7 @@ if CONNECT_MSG == confirm_msg:
     confirm_msg = controlled.recv(100).decode(FORMAT).strip()
     if confirm_msg == CONNECT_MSG_SCREEN:
         screen_thread = threading.Thread(target=screen_share)
-        
+        screen_thread.start()
 
 
 
