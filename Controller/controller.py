@@ -28,6 +28,47 @@ def screen_display(main_conn, main_addr):
     
 
     def screen_begin(conn, addr):
+        def stream(conn, addr):
+            sharing = True
+            while sharing:
+                
+                img_size = conn.recv(100).decode(FORMAT)
+                
+                if img_size:
+                    
+
+                    img_size = int(img_size)
+
+                    data = b''
+                    while len(data) < img_size:
+                        packet = conn.recv(1024)
+                        if not packet:
+                            break
+                        data += packet
+
+                    
+
+                    img = ImageTk.PhotoImage(Image.open(io.BytesIO(data)))
+
+                    
+
+                    # canvas1.delete('all')
+                    # canvas1.create_image(0, 0, image = img, anchor = 'nw')
+                    
+                    
+                    # window.update()
+
+                    img_confirm = "img recv".encode(FORMAT)
+                    img_confirm += b' ' * (100 - len(img_confirm))
+
+                    conn.send(img_confirm)
+
+                    contin_msg = conn.recv(100).decode(FORMAT)
+                    print(contin_msg)
+                    # sharing = False
+
+            
+
         confirm_msg = conn.recv(100).decode(FORMAT)
 
         confirm_back = "screen connected".encode(FORMAT)
@@ -47,25 +88,8 @@ def screen_display(main_conn, main_addr):
         canvas1 = Canvas(window, width = width, height = height) 
         canvas1.pack(fill = "both", expand = True) 
 
-        sharing = True
-
-        while sharing:
-            img_size = conn.recv(100).decode(FORMAT)
-            img_size = int(img_size)
-
-            data = b''
-            while len(data) < img_size:
-                packet = conn.recv(1024)
-                if not packet:
-                    break
-                data += packet
-
-            
-            img = ImageTk.PhotoImage(Image.open(io.BytesIO(data)))
-            canvas1.create_image(0, 0, image = img, anchor = 'nw')
-            print("opend img")
-
-            sharing = False
+        stream_thread = threading.Thread(target=stream, args=(conn, addr))
+        stream_thread.start()
 
         window.mainloop()
         

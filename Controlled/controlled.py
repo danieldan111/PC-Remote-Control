@@ -29,29 +29,26 @@ def screen_share():
 
     confirm_msg = screen_stream.recv(100).decode(FORMAT).strip()
     
-    img = ImageGrab.grab()
+    while True:
+        img = ImageGrab.grab()
 
-    binary_stream = io.BytesIO()
-    img.save(binary_stream, format='PNG')
-    binary_data = binary_stream.getvalue()
+        binary_stream = io.BytesIO()
+        img.save(binary_stream, format='PNG')
+        binary_data = binary_stream.getvalue()
 
-    send_size = str(len(binary_data)).encode()
-    send_size += b' ' * (100 - len(send_size))
+        send_size = str(len(binary_data)).encode()
+        send_size += b' ' * (100 - len(send_size))
 
-    screen_stream.send(send_size)
+        screen_stream.send(send_size)
 
-    screen_stream.sendall(binary_data)
-    # print("finito")
-    # time.sleep(5)
-    # print("contineo")
-    # img = ImageGrab.grab()
+        screen_stream.sendall(binary_data)
 
-    # binary_stream = io.BytesIO()
-    # img.save(binary_stream, format='PNG')
-    # binary_data = binary_stream.getvalue()
-
-    # send_size = str(len(binary_data)).encode()
-    # send_size += b' ' * (100 - len(send_size))
+        img_msg = screen_stream.recv(100).decode(FORMAT)
+        print(img_msg)
+        contine_msg = "end".encode(FORMAT)
+        contine_msg += b' ' * (100 - len(contine_msg))
+        screen_stream.send(contine_msg)
+        time.sleep(0.0166)
 
 
 controlled = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
