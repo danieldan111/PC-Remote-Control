@@ -23,8 +23,10 @@ def screen_display(main_conn, main_addr):
     ADDR_SCREEN = (SERVER, 5055)
     screen_recv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     screen_recv.bind(ADDR_SCREEN)
-    
 
+
+
+        
     def screen_begin(conn, addr):
         def stream(conn, addr):
             sharing = True
