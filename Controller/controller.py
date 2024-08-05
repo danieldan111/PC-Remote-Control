@@ -95,8 +95,6 @@ def screen_display(main_conn, main_addr):
     start_screen()
 
 
-
-
     
 
     
@@ -131,10 +129,9 @@ def keyboard_share(main_conn, main_addr):
     accept_keyboard_msg += b' ' * (100 - len(accept_keyboard_msg))
     main_conn.send(accept_keyboard_msg)
     
-    accept = main_conn.recv(100).decode(FORMAT)
-    print(accept)
+    SERVER_IP = main_conn.recv(100).decode(FORMAT)
 
-    ADDR_KEYBOARD = (SERVER, 5058)
+    ADDR_KEYBOARD = (SERVER_IP, 5058)
     keyboard_stream = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     keyboard_stream.connect(ADDR_KEYBOARD)
 

@@ -12,6 +12,7 @@ PORT = 5050
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DIS_MSG"
 SERVER = "10.0.0.21" #ip of the server
+MY_IP = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
 CONNECT_MSG = "!succses_connect"
 CONNECT_MSG_SCREEN = "!SCREEN_CONNECT"
@@ -51,7 +52,7 @@ def screen_share():
         time.sleep(0.00833333333)
 
 def keyboard_share():
-    ADDR_KEYBOARD = (SERVER, 5058)
+    ADDR_KEYBOARD = (MY_IP, 5056)
     keyboard_recv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     keyboard_recv.bind(ADDR_KEYBOARD)
 
@@ -107,7 +108,7 @@ def keyboard_share():
         keyboard_recv.listen()
         print(f"[LISTENING] Keyboard is Waiting for connection on {SERVER}")
 
-        accept_keyboard_msg = "!KEYBOARD_CONNECT".encode(FORMAT)
+        accept_keyboard_msg = MY_IP.encode(FORMAT)
         accept_keyboard_msg += b' ' * (100 - len(accept_keyboard_msg))
         controlled.send(accept_keyboard_msg)
 
