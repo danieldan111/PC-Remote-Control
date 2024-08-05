@@ -142,7 +142,7 @@ confirm_msg = controlled.recv(100).decode(FORMAT).strip()
 print(confirm_msg)
 
 if CONNECT_MSG == confirm_msg:
-    for i in range(1):
+    for i in range(2):
         confirm_msg = controlled.recv(100).decode(FORMAT).strip()
         if confirm_msg == CONNECT_MSG_SCREEN:
             screen_thread = threading.Thread(target=screen_share)
