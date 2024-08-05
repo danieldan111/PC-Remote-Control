@@ -64,8 +64,8 @@ def screen_display(main_conn, main_addr):
 
                     # conn.send(img_confirm)
 
-                    # contin_msg = conn.recv(100).decode(FORMAT)
-                    # # print(contin_msg)
+                    contin_msg = conn.recv(100).decode(FORMAT)
+                    print(contin_msg)
                     time.sleep(0.00833333333)
                     # sharing = False
 

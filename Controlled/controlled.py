@@ -52,9 +52,9 @@ def screen_share():
 
         # img_msg = screen_stream.recv(100).decode(FORMAT)
         # print(img_msg)
-        # contine_msg = "end".encode(FORMAT)
-        # contine_msg += b' ' * (100 - len(contine_msg))
-        # screen_stream.send(contine_msg)
+        contine_msg = "end".encode(FORMAT)
+        contine_msg += b' ' * (100 - len(contine_msg))
+        screen_stream.send(contine_msg)
         time.sleep(0.00833333333)
 
 def keyboard_share():
