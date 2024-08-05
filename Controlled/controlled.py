@@ -51,7 +51,7 @@ def screen_share():
         time.sleep(0.00833333333)
 
 def keyboard_share():
-    ADDR_KEYBOARD = (SERVER, 5056)
+    ADDR_KEYBOARD = (SERVER, 5058)
     keyboard_recv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     keyboard_recv.bind(ADDR_KEYBOARD)
 
