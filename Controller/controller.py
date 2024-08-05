@@ -98,6 +98,36 @@ def screen_display(main_conn, main_addr):
     
     start_screen()
 
+def keyboard_start(main_conn, main_addr):
+    ADDR_KEYBOARD = (SERVER, 5056)
+    keyboard_recv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    keyboard_recv.bind(ADDR_KEYBOARD)
+
+
+    def keyboard_begin(conn, addr):
+        confirm_msg = conn.recv(100).decode(FORMAT)
+
+        print(confirm_msg)
+
+        confirm_back = "keyboard connected".encode(FORMAT)
+        confirm_back += b' ' * (100 - len(confirm_back))
+
+        conn.send(confirm_back)
+
+
+    def start_keyboard():
+        keyboard_recv.listen()
+        print(f"[LISTENING] Keyboard is Waiting for connection on {SERVER}")
+
+        accept_keyboard_msg = "!KEYBOARD_CONNECT".encode(FORMAT)
+        accept_keyboard_msg += b' ' * (100 - len(accept_keyboard_msg))
+        main_conn.send(accept_keyboard_msg)
+
+        while True:
+            conn, addr = keyboard_recv.accept()
+            keyboard_begin(conn, addr)
+    
+    start_keyboard()
 
 def begin_remote_controll(conn, addr):
     confirm_msg = conn.recv(100).decode(FORMAT)
@@ -108,9 +138,11 @@ def begin_remote_controll(conn, addr):
     confirm_back += b' ' * (100 - len(confirm_back))
     conn.send(confirm_back)
 
-    screen_share = threading.Thread(target=screen_display,args=(conn,addr))
-    screen_share.start()
+    # screen_share = threading.Thread(target=screen_display,args=(conn,addr))
+    # screen_share.start()
 
+    keyboard_thread = threading.Thread(target=keyboard_start, args=(conn, addr))
+    keyboard_thread.start()
 
 def start():
     controller.listen()

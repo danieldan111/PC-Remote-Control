@@ -6,6 +6,8 @@ import time
 import threading
 import io
 import base64
+from pynput.keyboard import Key, Controller
+
 
 
 PORT = 5050
@@ -15,7 +17,7 @@ SERVER = "10.0.0.21" #ip of the server
 ADDR = (SERVER, PORT)
 CONNECT_MSG = "!succses_connect"
 CONNECT_MSG_SCREEN = "!SCREEN_CONNECT"
-
+CONNECT_MSG_KEYBOARD = "!KEYBOARD_CONNECT"
 
 def screen_share():
     ADDR_SCREEN = (SERVER, 5055)
@@ -51,6 +53,20 @@ def screen_share():
         time.sleep(0.00833333333)
 
 
+def keyboard_share():
+    ADDR_KEYBOARD = (SERVER, 5056)
+    keyboard_stream = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    keyboard_stream.connect(ADDR_KEYBOARD)
+
+    keyboard_msg = "KEYBOARD_connecting".encode(FORMAT)
+    keyboard_msg += b' ' * (100 - len(keyboard_msg))
+
+    keyboard_stream.send(keyboard_msg)
+
+    confirm_msg = keyboard_stream.recv(100).decode(FORMAT).strip()
+    
+
+
 controlled = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 controlled.connect(ADDR)
 
@@ -63,10 +79,15 @@ confirm_msg = controlled.recv(100).decode(FORMAT).strip()
 print(confirm_msg)
 
 if CONNECT_MSG == confirm_msg:
-    confirm_msg = controlled.recv(100).decode(FORMAT).strip()
-    if confirm_msg == CONNECT_MSG_SCREEN:
-        screen_thread = threading.Thread(target=screen_share)
-        screen_thread.start()
+    for i in range(1):
+        confirm_msg = controlled.recv(100).decode(FORMAT).strip()
+        if confirm_msg == CONNECT_MSG_SCREEN:
+            screen_thread = threading.Thread(target=screen_share)
+            screen_thread.start()
+
+        elif confirm_msg == CONNECT_MSG_KEYBOARD:
+            keyboard_thread = threading.Thread(target=keyboard_share)
+            keyboard_thread.start()
 
 
 
