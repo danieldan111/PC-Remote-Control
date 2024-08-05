@@ -48,7 +48,7 @@ def screen_share():
         contine_msg = "end".encode(FORMAT)
         contine_msg += b' ' * (100 - len(contine_msg))
         screen_stream.send(contine_msg)
-        time.sleep(0.0166)
+        time.sleep(0.00833333333)
 
 
 controlled = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

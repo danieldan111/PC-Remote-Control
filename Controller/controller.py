@@ -7,6 +7,9 @@ import socket
 from PIL import *
 import base64
 import io
+import cv2
+import numpy as np
+
 
 
 HEADER = 64
@@ -24,7 +27,6 @@ def screen_display(main_conn, main_addr):
     ADDR_SCREEN = (SERVER, 5055)
     screen_recv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     screen_recv.bind(ADDR_SCREEN)
-    
     
 
     def screen_begin(conn, addr):
@@ -47,16 +49,16 @@ def screen_display(main_conn, main_addr):
                         data += packet
 
                     
-
-                    img = ImageTk.PhotoImage(Image.open(io.BytesIO(data)))
-
-                    
-
-                    # canvas1.delete('all')
-                    # canvas1.create_image(0, 0, image = img, anchor = 'nw')
+                    np_array = np.frombuffer(data, np.uint8)
                     
                     
-                    # window.update()
+                    image = cv2.imdecode(np_array, cv2.IMREAD_COLOR)
+                    
+                    # Display the image using OpenCV
+                    cv2.imshow('Image', image)
+                    cv2.waitKey(1)
+                    # cv2.destroyAllWindows()
+
 
                     img_confirm = "img recv".encode(FORMAT)
                     img_confirm += b' ' * (100 - len(img_confirm))
@@ -64,7 +66,8 @@ def screen_display(main_conn, main_addr):
                     conn.send(img_confirm)
 
                     contin_msg = conn.recv(100).decode(FORMAT)
-                    print(contin_msg)
+                    # print(contin_msg)
+                    time.sleep(0.00833333333)
                     # sharing = False
 
             
@@ -76,22 +79,7 @@ def screen_display(main_conn, main_addr):
 
         conn.send(confirm_back)
         
-        window = Tk()
-
-        width= window.winfo_screenwidth() 
-        height= window.winfo_screenheight()
-
-        window.geometry("%dx%d" % (width, height))
-        window.state('zoomed')
-
-        #canvas for the img
-        canvas1 = Canvas(window, width = width, height = height) 
-        canvas1.pack(fill = "both", expand = True) 
-
-        stream_thread = threading.Thread(target=stream, args=(conn, addr))
-        stream_thread.start()
-
-        window.mainloop()
+        stream(conn, addr)
         
 
 
