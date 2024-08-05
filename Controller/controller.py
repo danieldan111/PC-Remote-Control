@@ -32,11 +32,11 @@ def screen_display(main_conn, main_addr):
             sharing = True
             while sharing:
                 
-                img_size = conn.recv(100).decode(FORMAT)
-                
+                img_size = conn.recv(100)
+                print(img_size)
                 if img_size:
                     
-
+                    img_size = img_size.decode(FORMAT)
                     img_size = int(img_size)
 
                     data = b''
@@ -64,8 +64,8 @@ def screen_display(main_conn, main_addr):
 
                     # conn.send(img_confirm)
 
-                    contin_msg = conn.recv(100).decode(FORMAT)
-                    print(contin_msg)
+                    # contin_msg = conn.recv(100).decode(FORMAT)
+                    # print(contin_msg)
                     time.sleep(0.00833333333)
                     # sharing = False
 
