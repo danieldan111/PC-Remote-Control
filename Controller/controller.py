@@ -129,7 +129,7 @@ def keyboard_share(main_conn, main_addr):
     accept_keyboard_msg += b' ' * (100 - len(accept_keyboard_msg))
     main_conn.send(accept_keyboard_msg)
     
-    SERVER_IP = main_conn.recv(100).decode(FORMAT)
+    SERVER_IP = main_conn.recv(100).decode(FORMAT).strip()
     print(SERVER_IP)
 
     ADDR_KEYBOARD = (SERVER_IP, 5056)
