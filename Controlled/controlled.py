@@ -5,7 +5,6 @@ from tkinter import *
 import time
 import threading
 import io
-import base64
 from pynput.keyboard import Key, Controller
 
 
