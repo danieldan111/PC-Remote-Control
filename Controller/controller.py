@@ -1,15 +1,11 @@
 from PIL import Image,ImageTk #pip install pillow
-import os
-from tkinter import *
 import time
 import threading
 import socket
 from PIL import *
-import base64
-import io
 import cv2
 import numpy as np
-
+from pynput.keyboard import Key, Controller
 
 
 HEADER = 64
@@ -94,7 +90,7 @@ def screen_display(main_conn, main_addr):
         while True:
             conn, addr = screen_recv.accept()
             screen_begin(conn, addr)
-    
+
     
     start_screen()
 
@@ -113,7 +109,42 @@ def keyboard_start(main_conn, main_addr):
         confirm_back += b' ' * (100 - len(confirm_back))
 
         conn.send(confirm_back)
+        key_map = {
+            "Key.ctrl_l": Key.ctrl_l,
+            "Key.ctrl_r": Key.ctrl_r,
+            "Key.alt_l": Key.alt_l,
+            "Key.alt_r": Key.alt_r,
+            "Key.shift": Key.shift,
+            "Key.shift_r": Key.shift_r,
+            "Key.cmd": Key.cmd,
+            "Key.cmd_r": Key.cmd_r,
+            "Key.tab": Key.tab,
+            "Key.esc": Key.esc,
+            "Key.space": Key.space,
+            "Key.enter": Key.enter,
+            # Add more key mappings as needed
+        }
+        keyboard_listen = True
+        keyboard = Controller()
 
+        while keyboard_listen:
+            key_stroke = conn.recv(100).decode(FORMAT).strip()
+            if key_stroke:
+                mode = key_stroke[:6]
+                key = key_stroke[7::]
+                if mode == "!PRESS":
+                    try:
+                        keyboard.press(key)
+                    except ValueError:
+                        keyboard.press(key_map[key])
+                elif mode == "!RELIS":
+                    try:
+                        keyboard.release(key)
+                    except ValueError:
+                        keyboard.release(key_map[key])
+
+
+    
 
     def start_keyboard():
         keyboard_recv.listen()
@@ -154,5 +185,5 @@ def start():
         
 
 
-start()
+start() 
 

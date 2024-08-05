@@ -9,7 +9,6 @@ import base64
 from pynput import keyboard
 
 
-
 PORT = 5050
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DIS_MSG"
@@ -56,14 +55,30 @@ def screen_share():
 def keyboard_share():
     def on_press(key):
         try:
-            print('alphanumeric key {0} pressed'.format(key.char))
+            press_key = "!PRESS ".encode(FORMAT)
+            press_key += str(key.char).encode(FORMAT)
+            press_key += b' ' * (100 - len(press_key))
+            keyboard_stream.send(press_key)
+            
         except AttributeError:
-            print('special key {0} pressed'.format(key))
+            press_key = "!PRESS ".encode(FORMAT)
+            press_key += str(key).encode(FORMAT)
+            press_key += b' ' * (100 - len(press_key))
+            keyboard_stream.send(press_key)
+
+
     def on_release(key):
-        print('{0} released'.format(key))
-        if key == keyboard.Key.esc:
-            # Stop listener
-            return False
+        try:
+            press_key = "!RELIS ".encode(FORMAT)
+            press_key += str(key.char).encode(FORMAT)
+            press_key += b' ' * (100 - len(press_key))
+            keyboard_stream.send(press_key)
+            
+        except AttributeError:
+            press_key = "!RELIS ".encode(FORMAT)
+            press_key += str(key).encode(FORMAT)
+            press_key += b' ' * (100 - len(press_key))
+            keyboard_stream.send(press_key)
 
     ADDR_KEYBOARD = (SERVER, 5056)
     keyboard_stream = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -77,10 +92,8 @@ def keyboard_share():
     confirm_msg = keyboard_stream.recv(100).decode(FORMAT).strip()
 
     
-
-    while True:
-        with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-            listener.join()
+    with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
+        listener.join()
 
 
 controlled = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -105,8 +118,6 @@ if CONNECT_MSG == confirm_msg:
             keyboard_thread = threading.Thread(target=keyboard_share)
             keyboard_thread.start()
             
-            print("finito")
-
 
 
 
