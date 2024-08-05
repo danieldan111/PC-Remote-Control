@@ -55,7 +55,7 @@ def screen_share():
         # contine_msg = "end".encode(FORMAT)
         # contine_msg += b' ' * (100 - len(contine_msg))
         # screen_stream.send(contine_msg)
-        time.sleep(0.00833333333)
+        time.sleep(1/60)
 
 def keyboard_share():
     ADDR_KEYBOARD = (MY_IP, 5056)

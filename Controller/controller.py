@@ -32,7 +32,7 @@ def screen_display(main_conn, main_addr):
             sharing = True
             while sharing:
                 
-                img_size = conn.recv(100)
+                img_size = conn.recv(100).strip()
                 print(img_size)
                 if img_size:
                     
@@ -66,7 +66,7 @@ def screen_display(main_conn, main_addr):
 
                     # contin_msg = conn.recv(100).decode(FORMAT)
                     # print(contin_msg)
-                    time.sleep(0.00833333333)
+                    time.sleep(1/60)
                     # sharing = False
 
             
