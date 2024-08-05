@@ -5,7 +5,7 @@ import socket
 from PIL import *
 import cv2
 import numpy as np
-from pynput.keyboard import Key, Controller
+from pynput import keyboard
 
 
 HEADER = 64
@@ -94,71 +94,61 @@ def screen_display(main_conn, main_addr):
     
     start_screen()
 
-def keyboard_start(main_conn, main_addr):
+
+
+
+    
+
+    
+def keyboard_share(main_conn, main_addr):
+    def on_press(key):
+        try:
+            press_key = "!PRESS ".encode(FORMAT)
+            press_key += str(key.char).encode(FORMAT)
+            press_key += b' ' * (100 - len(press_key))
+            keyboard_stream.send(press_key)
+            
+        except AttributeError:
+            press_key = "!PRESS ".encode(FORMAT)
+            press_key += str(key).encode(FORMAT)
+            press_key += b' ' * (100 - len(press_key))
+            keyboard_stream.send(press_key)
+
+
+    def on_release(key):
+        try:
+            press_key = "!RELIS ".encode(FORMAT)
+            press_key += str(key.char).encode(FORMAT)
+            press_key += b' ' * (100 - len(press_key))
+            keyboard_stream.send(press_key)
+            
+        except AttributeError:
+            press_key = "!RELIS ".encode(FORMAT)
+            press_key += str(key).encode(FORMAT)
+            press_key += b' ' * (100 - len(press_key))
+            keyboard_stream.send(press_key)
+    accept_keyboard_msg = "!KEYBOARD_CONNECT".encode(FORMAT)
+    accept_keyboard_msg += b' ' * (100 - len(accept_keyboard_msg))
+    main_conn.send(accept_keyboard_msg)
+    
+    accept = main_conn.recv(100).decode(FORMAT)
+    print(accept)
+
     ADDR_KEYBOARD = (SERVER, 5056)
-    keyboard_recv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    keyboard_recv.bind(ADDR_KEYBOARD)
+    keyboard_stream = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    keyboard_stream.connect(ADDR_KEYBOARD)
 
+    keyboard_msg = "KEYBOARD_connecting".encode(FORMAT)
+    keyboard_msg += b' ' * (100 - len(keyboard_msg))
 
-    def keyboard_begin(conn, addr):
-        confirm_msg = conn.recv(100).decode(FORMAT)
+    keyboard_stream.send(keyboard_msg)
 
-        print(confirm_msg)
-
-        confirm_back = "keyboard connected".encode(FORMAT)
-        confirm_back += b' ' * (100 - len(confirm_back))
-
-        conn.send(confirm_back)
-        key_map = {
-            "Key.ctrl_l": Key.ctrl_l,
-            "Key.ctrl_r": Key.ctrl_r,
-            "Key.alt_l": Key.alt_l,
-            "Key.alt_r": Key.alt_r,
-            "Key.shift": Key.shift,
-            "Key.shift_r": Key.shift_r,
-            "Key.cmd": Key.cmd,
-            "Key.cmd_r": Key.cmd_r,
-            "Key.tab": Key.tab,
-            "Key.esc": Key.esc,
-            "Key.space": Key.space,
-            "Key.enter": Key.enter,
-            # Add more key mappings as needed
-        }
-        keyboard_listen = True
-        keyboard = Controller()
-
-        while keyboard_listen:
-            key_stroke = conn.recv(100).decode(FORMAT).strip()
-            if key_stroke:
-                mode = key_stroke[:6]
-                key = key_stroke[7::]
-                if mode == "!PRESS":
-                    try:
-                        keyboard.press(key)
-                    except ValueError:
-                        keyboard.press(key_map[key])
-                elif mode == "!RELIS":
-                    try:
-                        keyboard.release(key)
-                    except ValueError:
-                        keyboard.release(key_map[key])
-
+    confirm_msg = keyboard_stream.recv(100).decode(FORMAT).strip()
 
     
+    with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
+        listener.join()
 
-    def start_keyboard():
-        keyboard_recv.listen()
-        print(f"[LISTENING] Keyboard is Waiting for connection on {SERVER}")
-
-        accept_keyboard_msg = "!KEYBOARD_CONNECT".encode(FORMAT)
-        accept_keyboard_msg += b' ' * (100 - len(accept_keyboard_msg))
-        main_conn.send(accept_keyboard_msg)
-
-        while True:
-            conn, addr = keyboard_recv.accept()
-            keyboard_begin(conn, addr)
-    
-    start_keyboard()
 
 def begin_remote_controll(conn, addr):
     confirm_msg = conn.recv(100).decode(FORMAT)
@@ -172,7 +162,7 @@ def begin_remote_controll(conn, addr):
     # screen_share = threading.Thread(target=screen_display,args=(conn,addr))
     # screen_share.start()
 
-    keyboard_thread = threading.Thread(target=keyboard_start, args=(conn, addr))
+    keyboard_thread = threading.Thread(target=keyboard_share, args=(conn, addr))
     keyboard_thread.start()
     
 
