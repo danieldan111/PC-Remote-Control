@@ -42,20 +42,13 @@ def screen_share():
 
         screen_stream.send(send_size)
 
-        for i in range(0, len(binary_data), 4096):
-            chunk = binary_data[i:i+4096]
-            if len(chunk) < 4096:
-                chunk += b' ' * (4096 - len(chunk))
-            screen_stream.send(chunk)
-
-        # screen_stream.sendall(binary_data)
+        screen_stream.sendall(binary_data)
 
         # img_msg = screen_stream.recv(100).decode(FORMAT)
         # print(img_msg)
-        contine_msg = "end".encode(FORMAT)
-        contine_msg += b' ' * (100 - len(contine_msg))
-        screen_stream.send(contine_msg)
-        print(contine_msg)
+        # contine_msg = "end".encode(FORMAT)
+        # contine_msg += b' ' * (100 - len(contine_msg))
+        # screen_stream.send(contine_msg)
         time.sleep(0.00833333333)
 
 def keyboard_share():
@@ -140,7 +133,6 @@ confirm_connection_msg += b' ' * (100 - len(confirm_connection_msg))
 controlled.send(confirm_connection_msg)
 
 confirm_msg = controlled.recv(100).decode(FORMAT).strip()
-print(confirm_msg)
 
 if CONNECT_MSG == confirm_msg:
     for i in range(2):
