@@ -45,6 +45,7 @@ def screen_display(main_conn, main_addr):
                         data += packet
 
                     
+                    
                     np_array = np.frombuffer(data, np.uint8)
                     
                     
@@ -162,7 +163,7 @@ def begin_remote_controll(conn, addr):
 
     screen_share = threading.Thread(target=screen_display,args=(conn,addr))
     screen_share.start()
-    time.sleep(0.5)
+    time.sleep(1)
     keyboard_thread = threading.Thread(target=keyboard_share, args=(conn, addr))
     keyboard_thread.start()
     

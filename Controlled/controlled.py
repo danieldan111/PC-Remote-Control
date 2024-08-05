@@ -42,7 +42,13 @@ def screen_share():
 
         screen_stream.send(send_size)
 
-        screen_stream.sendall(binary_data)
+        for i in range(0, len(binary_data), 4096):
+            chunk = binary_data[i:i+4096]
+            if len(chunk) < 4096:
+                chunk += b' ' * (4096 - len(chunk))
+            screen_stream.send(chunk)
+
+        # screen_stream.sendall(binary_data)
 
         # img_msg = screen_stream.recv(100).decode(FORMAT)
         # print(img_msg)
