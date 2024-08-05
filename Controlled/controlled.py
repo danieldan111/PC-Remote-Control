@@ -44,11 +44,11 @@ def screen_share():
 
         screen_stream.sendall(binary_data)
 
-        img_msg = screen_stream.recv(100).decode(FORMAT)
-        print(img_msg)
-        contine_msg = "end".encode(FORMAT)
-        contine_msg += b' ' * (100 - len(contine_msg))
-        screen_stream.send(contine_msg)
+        # img_msg = screen_stream.recv(100).decode(FORMAT)
+        # print(img_msg)
+        # contine_msg = "end".encode(FORMAT)
+        # contine_msg += b' ' * (100 - len(contine_msg))
+        # screen_stream.send(contine_msg)
         time.sleep(0.00833333333)
 
 def keyboard_share():

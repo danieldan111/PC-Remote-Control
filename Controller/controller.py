@@ -39,7 +39,7 @@ def screen_display(main_conn, main_addr):
 
                     data = b''
                     while len(data) < img_size:
-                        packet = conn.recv(1024)
+                        packet = conn.recv(4096)
                         if not packet:
                             break
                         data += packet
@@ -56,13 +56,13 @@ def screen_display(main_conn, main_addr):
                     # cv2.destroyAllWindows()
 
 
-                    img_confirm = "img recv".encode(FORMAT)
-                    img_confirm += b' ' * (100 - len(img_confirm))
+                    # img_confirm = "img recv".encode(FORMAT)
+                    # img_confirm += b' ' * (100 - len(img_confirm))
 
-                    conn.send(img_confirm)
+                    # conn.send(img_confirm)
 
-                    contin_msg = conn.recv(100).decode(FORMAT)
-                    # print(contin_msg)
+                    # contin_msg = conn.recv(100).decode(FORMAT)
+                    # # print(contin_msg)
                     time.sleep(0.00833333333)
                     # sharing = False
 
@@ -119,12 +119,14 @@ def keyboard_share(main_conn, main_addr):
             press_key += str(key.char).encode(FORMAT)
             press_key += b' ' * (100 - len(press_key))
             keyboard_stream.send(press_key)
+
             
         except AttributeError:
             press_key = "!RELIS ".encode(FORMAT)
             press_key += str(key).encode(FORMAT)
             press_key += b' ' * (100 - len(press_key))
             keyboard_stream.send(press_key)
+
     accept_keyboard_msg = "!KEYBOARD_CONNECT".encode(FORMAT)
     accept_keyboard_msg += b' ' * (100 - len(accept_keyboard_msg))
     main_conn.send(accept_keyboard_msg)
@@ -144,8 +146,9 @@ def keyboard_share(main_conn, main_addr):
     confirm_msg = keyboard_stream.recv(100).decode(FORMAT).strip()
 
     
-    with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-        listener.join()
+    listner = keyboard.Listener(on_press=on_press, on_release=on_release)
+    listner.start()
+        
 
 
 def begin_remote_controll(conn, addr):
@@ -159,7 +162,7 @@ def begin_remote_controll(conn, addr):
 
     screen_share = threading.Thread(target=screen_display,args=(conn,addr))
     screen_share.start()
-
+    time.sleep(0.5)
     keyboard_thread = threading.Thread(target=keyboard_share, args=(conn, addr))
     keyboard_thread.start()
     
