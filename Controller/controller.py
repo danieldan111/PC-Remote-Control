@@ -130,8 +130,9 @@ def keyboard_share(main_conn, main_addr):
     main_conn.send(accept_keyboard_msg)
     
     SERVER_IP = main_conn.recv(100).decode(FORMAT)
+    print(SERVER_IP)
 
-    ADDR_KEYBOARD = (SERVER_IP, 5058)
+    ADDR_KEYBOARD = (SERVER_IP, 5056)
     keyboard_stream = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     keyboard_stream.connect(ADDR_KEYBOARD)
 
