@@ -10,7 +10,7 @@ from pynput import keyboard
 
 HEADER = 64
 PORT = 5050
-SERVER = "10.0.0.21" #ip of the controlled device
+SERVER = "10.0.0.7" #ip of the controlled device
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DIS_MSG"
@@ -66,7 +66,6 @@ def keyboard_share():
     listner.start()
         
 
-keyboard_thread = threading.Thread(target=keyboard_share)
-keyboard_thread.start()
+keyboard_share()
 
 
