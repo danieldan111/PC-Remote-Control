@@ -62,13 +62,16 @@ def start_keyboard():
             "Key.enter": Key.enter,
             "Key.backspace": Key.backspace,
             "Key.caps_lock": Key.caps_lock,
+            
+
+            # Add more key mappings as needed
+        }
+        speciel_keys = {
             "☺": "a",
             "▬": "v",
             "↑": "x",
             "→": "z",
             "♥": "c"
-
-            # Add more key mappings as needed
         }
         keyboard_listen = True
         keyboard = Controller()
@@ -79,16 +82,23 @@ def start_keyboard():
                 mode = key_stroke[:6]
                 key = key_stroke[7::]
                 if mode == "!PRESS":
-                    if key in key_map:
-                        keyboard.press(key_map[key])
+                    if key in speciel_keys:
+                        keyboard.press(speciel_keys[key])
                     else:
-                        keyboard.press(key)
+                        try:
+                            keyboard.press(key)
+                        except ValueError:
+                            keyboard.press(key_map[key])
                         
                 elif mode == "!RELIS":
-                    if key in key_map:
-                        keyboard.press(key_map[key])
+                    if key in speciel_keys:
+                        keyboard.release(speciel_keys[key])
                     else:
-                        keyboard.press(key)
+                        try:
+                            keyboard.release(key)
+                        except ValueError:
+                            keyboard.release(key_map[key])
+                        
 
 
     keyboard.listen()
