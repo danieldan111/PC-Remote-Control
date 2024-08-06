@@ -64,6 +64,7 @@ def keyboard_share():
     
     listner = keyboard.Listener(on_press=on_press, on_release=on_release)
     listner.start()
+    listner.join()
         
 
 keyboard_share()

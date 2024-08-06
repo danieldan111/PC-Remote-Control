@@ -77,10 +77,8 @@ def start_keyboard():
                 if mode == "!PRESS":
                     try:
                         keyboard.press(key)
-                        print(key)
                     except ValueError:
                         keyboard.press(key_map[key])
-                        print(key)
                 elif mode == "!RELIS":
                     try:
                         keyboard.release(key)
