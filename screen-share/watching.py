@@ -15,15 +15,19 @@ screen.connect(ADDR)
 def screen_share():
     watching_stream = True
     while watching_stream:
-        img_size = int(screen.recv(100).decode(FORMAT))
+        img_size = screen.recv(100).decode(FORMAT).strip()
         # print(img_size)
         if img_size:
-            
+            img_size = int(img_size)
             img_data = b''
             while len(img_data) < img_size:
                 chunk = screen.recv(1024)
                 img_data += chunk
             
+
+            ending_msg = screen.recv(100).decode(FORMAT).strip()
+            
+
             with open("procces.png", 'wb') as screeny:
                 screeny.write(img_data)
             

@@ -44,7 +44,9 @@ def screen_share(conn, addr):
             conn.send(chunk)
             total_sent += 1024
 
-
+        ending_msg = "!SENT_ALL".encode(FORMAT)
+        ending_msg += b' ' * (100 - len(ending_msg))
+        conn.send(ending_msg)
         # time.sleep()
 
 
