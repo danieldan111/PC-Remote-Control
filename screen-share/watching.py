@@ -19,10 +19,11 @@ def screen_share():
         # print(img_size)
         if img_size:
             img_size = int(img_size)
-            img_data = b''
-            while len(img_data) < img_size:
-                chunk = screen.recv(1024)
-                img_data += chunk
+            img_data = screen.recv(img_size)
+            # img_data = b''
+            # while len(img_data) < img_size:
+            #     chunk = screen.recv(1024)
+            #     img_data += chunk
             
 
             ending_msg = screen.recv(100).decode(FORMAT).strip()
