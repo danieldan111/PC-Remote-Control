@@ -5,7 +5,7 @@ import time
 
 
 PORT = 5050
-SERVER = "10.0.0.21"  #the ip of the computer you want to control
+SERVER = "10.0.0.7"  #the ip of the computer you want to control
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 
@@ -21,7 +21,7 @@ def screen_share():
             img_size = int(img_size.decode(FORMAT))
             img_data = b''
             while len(img_data) < img_size:
-                chunk = screen.recv(1024)
+                chunk = screen.recv(4096)
                 img_data += chunk
             
 
