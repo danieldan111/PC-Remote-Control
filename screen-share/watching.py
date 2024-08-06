@@ -15,10 +15,10 @@ screen.connect(ADDR)
 def screen_share():
     watching_stream = True
     while watching_stream:
-        img_size = screen.recv(100).decode(FORMAT).strip()
+        img_size = screen.recv(100).strip()
         # print(img_size)
-        if img_size:
-            img_size = int(img_size)
+        if len(img_size) > 0:
+            img_size = int(img_size.decode(FORMAT))
             img_data = b''
             while len(img_data) < img_size:
                 chunk = screen.recv(1024)
