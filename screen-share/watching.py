@@ -97,8 +97,8 @@ def begin_remote_controll(conn, addr):
     confirm_back += b' ' * (100 - len(confirm_back))
     conn.send(confirm_back)
 
-    # screen_share = threading.Thread(target=screen_display,args=(conn,addr))
-    # screen_share.start()
+    screen_share = threading.Thread(target=screen_display,args=(conn,addr))
+    screen_share.start()
 
 
 
