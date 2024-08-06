@@ -35,19 +35,23 @@ def screen_share(conn, addr):
 
         total_sent = 0
 
-        conn.sendall(binary_data)
-        # while total_sent < len(binary_data):
-        #     chunk = binary_data[total_sent:total_sent + chunk_size]
-        #     if len(chunk) < 1024:
-        #             chunk += b' ' * (1024 - len(chunk))
+        # conn.sendall(binary_data)
+        while total_sent < len(binary_data):
+            chunk = binary_data[total_sent:total_sent + chunk_size]
+            if len(chunk) < 1024:
+                    chunk += b' ' * (1024 - len(chunk))
 
-        #     conn.send(chunk)
-        #     total_sent += 1024
+            conn.send(chunk)
+            total_sent += 1024
 
-        # ending_msg = "!SENT_ALL".encode(FORMAT)
-        # ending_msg += b' ' * (100 - len(ending_msg))
-        # conn.send(ending_msg)
-        # time.sleep()
+        ending_msg = "!SENT_ALL".encode(FORMAT)
+        ending_msg += b' ' * (100 - len(ending_msg))
+        conn.send(ending_msg)
+
+        confirm_ending_msg = conn.recv(100).decode(FORMAT)
+        print(confirm_ending_msg)
+
+        time.sleep(1/60)
 
 
 def screen_listen():
@@ -55,6 +59,7 @@ def screen_listen():
     print(f"[LISTENING] Server is listnening on {SERVER}")
     while True:
         conn, addr = screen.accept()
+        print(f"{conn}, {addr}")
         screen_share(conn, addr)
         
 
