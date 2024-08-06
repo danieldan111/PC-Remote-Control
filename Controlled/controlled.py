@@ -19,13 +19,26 @@ CONNECT_MSG_KEYBOARD = "!KEYBOARD_CONNECT"
 
 
 
-def keyboard_share():
-    ADDR_KEYBOARD = (MY_IP, 5056)
-    keyboard_recv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    keyboard_recv.bind(ADDR_KEYBOARD)
 
 
-    def keyboard_begin(conn, addr):
+
+#binding screen, keyboard and mouse:
+
+# screen = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# screen.bind(ADDR)
+
+KEYBOARD_ADDR = (MY_IP, 5056)
+keyboard = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+keyboard.bind(KEYBOARD_ADDR)
+
+# MOUSE_ADDR = (MY_IP, 5058)
+# mouse = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# mouse.bind(KEYBOARD_ADDR)
+
+
+            
+def start_keyboard():
+    def handle_keyboard(conn, addr):
         confirm_msg = conn.recv(100).decode(FORMAT)
 
         print(confirm_msg)
@@ -73,41 +86,6 @@ def keyboard_share():
                         keyboard.release(key)
                     except ValueError:
                         keyboard.release(key_map[key])
-
-    def start_keyboard():
-        keyboard_recv.listen()
-        print(f"[LISTENING] Keyboard is Waiting for connection on {SERVER}")
-
-        accept_keyboard_msg = MY_IP.encode(FORMAT)
-        accept_keyboard_msg += b' ' * (100 - len(accept_keyboard_msg))
-        controlled.send(accept_keyboard_msg)
-
-        while True:
-            conn, addr = keyboard_recv.accept()
-            keyboard_begin(conn, addr)
-    
-    start_keyboard()
-
-
-
-#binding screen, keyboard and mouse:
-
-# screen = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# screen.bind(ADDR)
-
-KEYBOARD_ADDR = (MY_IP, 5056)
-keyboard = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-keyboard.bind(KEYBOARD_ADDR)
-
-# MOUSE_ADDR = (MY_IP, 5058)
-# mouse = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# mouse.bind(KEYBOARD_ADDR)
-
-
-            
-def start_keyboard():
-    def handle_keyboard(conn, addr):
-        pass
 
 
     keyboard.listen()
