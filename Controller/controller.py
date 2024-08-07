@@ -15,15 +15,27 @@ ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DIS_MSG"
 
-KEYBOARD_ADDR = (SERVER, 5056)
-keyboard_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-keyboard_sock.connect(KEYBOARD_ADDR)
+# KEYBOARD_ADDR = (SERVER, 5056)
+# keyboard_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# keyboard_sock.connect(KEYBOARD_ADDR)
+
+SCREEN_ADDR = (SERVER, 5057)
+screen_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+screen_sock.connect(SCREEN_ADDR_ADDR)
 
 
+def screen_watch():
+    screen_msg = "SCREEN_connecting".encode(FORMAT)
+    screen_msg += b' ' * (100 - len(screen_msgs))
 
+    screen_sock.send(screen_msg)
 
-
+    confirm_msg = screen_sock.recv(100).decode(FORMAT).strip()
     
+    
+
+
+
 def keyboard_share():
     def on_press(key):
         try:
@@ -67,6 +79,6 @@ def keyboard_share():
     listner.join()
         
 
-keyboard_share()
+# keyboard_share()
 
-
+screen_watch()
