@@ -15,9 +15,9 @@ ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DIS_MSG"
 
-# KEYBOARD_ADDR = (SERVER, 5056)
-# keyboard_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# keyboard_sock.connect(KEYBOARD_ADDR)
+KEYBOARD_ADDR = (SERVER, 5056)
+keyboard_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+keyboard_sock.connect(KEYBOARD_ADDR)
 
 SCREEN_ADDR = (SERVER, 5050)
 screen_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -126,8 +126,9 @@ def keyboard_share():
     listner = keyboard.Listener(on_press=on_press, on_release=on_release)
     listner.start()
     listner.join()
-        
 
-# keyboard_share()
+       
+keyboard_thread = threading.Thread(target=keyboard_share)
+keyboard_thread.start()
 
 screen_watch()
