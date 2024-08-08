@@ -32,7 +32,7 @@ keyboard.bind(KEYBOARD_ADDR)
 
 MOUSE_ADDR = (MY_IP, 5058)
 mouse = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-mouse.bind(KEYBOARD_ADDR)
+mouse.bind(MOUSE_ADDR)
 
 
 def start_screen():

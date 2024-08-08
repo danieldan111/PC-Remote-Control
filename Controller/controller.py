@@ -23,9 +23,9 @@ SCREEN_ADDR = (SERVER, 5050)
 screen_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 screen_sock.connect(SCREEN_ADDR)
 
-SCREEN_ADDR = (SERVER, 5058)
+MOUSE_ADDR = (SERVER, 5058)
 mouse_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-mouse_sock.connect(SCREEN_ADDR)
+mouse_sock.connect(MOUSE_ADDR)
 
 
 def screen_watch():
