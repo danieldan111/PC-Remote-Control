@@ -68,7 +68,8 @@ def start_screen():
     print(f"[LISTENING] Screen is listnening on {MY_IP}")
     while True:
         conn, addr = screen.accept()
-        handle_screen(conn, addr)
+        break
+    handle_screen(conn, addr)  
 
 
 def start_keyboard():
@@ -139,7 +140,8 @@ def start_keyboard():
     print(f"[LISTENING] Keyboard is listnening on {MY_IP}")
     while True:
         conn, addr = keyboard.accept()
-        handle_keyboard(conn, addr)
+        break
+    handle_keyboard(conn, addr)
 
 
 def start_mouse():
@@ -193,7 +195,8 @@ def start_mouse():
     print(f"[LISTENING] Mouse is listnening on {MY_IP}")
     while True:
         conn, addr = mouse.accept()
-        handle_mouse(conn, addr)
+        break
+    handle_mouse(conn, addr)
 
 
 def close_sockets():
