@@ -109,9 +109,12 @@ def start_keyboard():
             "→": "z",
             "♥": "c"
         }
+
+        global keyboard_listen
         keyboard_listen = True
         keyboard = board()
 
+        
         while keyboard_listen:
             key_stroke = conn.recv(100).decode(FORMAT).strip()
             if key_stroke:
@@ -168,6 +171,7 @@ def start_mouse():
         x_ratio = other_width / my_width
         y_ratio = other_height / my_height
 
+        global mouse_listen
         mouse_listen = True
 
         mouse_key_map = {"Button.left" : Button.left, "Button.right": Button.right}
@@ -205,6 +209,8 @@ def close_sockets():
     keyboard.close()
     mouse.close()
     print("closeing sockets")
+    mouse_listen = False
+    keyboard_listen = False
 
 
 def start_sockets():
@@ -214,6 +220,8 @@ def start_sockets():
     keyboard_thread = threading.Thread(target=start_keyboard)
     keyboard_thread.start()
     start_screen()
+
+    
 
 
 
