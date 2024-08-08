@@ -185,7 +185,6 @@ def start_mouse():
                     if pressed:
                         mouse.press(mouse_key_map[button])
                     else:
-                        print("relesigng", mouse_key_map[button])
                         mouse.release(mouse_key_map[button])
                     
 
