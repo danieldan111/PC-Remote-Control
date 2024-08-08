@@ -46,6 +46,11 @@ def start_screen():
 
         conn.send(confirm_back)
 
+        screen_sharing = True
+        while screen_sharing:
+            #code
+
+            time.sleep(0.000001)
 
 
     screen.listen()

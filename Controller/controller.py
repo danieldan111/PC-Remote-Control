@@ -10,7 +10,7 @@ from pynput import keyboard
 
 HEADER = 64
 PORT = 5050
-SERVER = "10.0.0.7" #ip of the controlled device
+SERVER = "10.0.0.21" #ip of the controlled device
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DIS_MSG"
@@ -19,20 +19,23 @@ DISCONNECT_MESSAGE = "!DIS_MSG"
 # keyboard_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # keyboard_sock.connect(KEYBOARD_ADDR)
 
-SCREEN_ADDR = (SERVER, 5057)
+SCREEN_ADDR = (SERVER, 5050)
 screen_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-screen_sock.connect(SCREEN_ADDR_ADDR)
+screen_sock.connect(SCREEN_ADDR)
 
 
 def screen_watch():
     screen_msg = "SCREEN_connecting".encode(FORMAT)
-    screen_msg += b' ' * (100 - len(screen_msgs))
+    screen_msg += b' ' * (100 - len(screen_msg))
 
     screen_sock.send(screen_msg)
 
     confirm_msg = screen_sock.recv(100).decode(FORMAT).strip()
-    
-    
+
+    screen_sharing = True
+    while screen_sharing:
+        #code
+        pass
 
 
 
