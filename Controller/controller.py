@@ -145,12 +145,12 @@ def mouse_share():
         pass
 
 
-    keyboard_msg = "MOUSE_connecting".encode(FORMAT)
-    keyboard_msg += b' ' * (100 - len(keyboard_msg))
+    mouse_msg = "MOUSE_connecting".encode(FORMAT)
+    mouse_msg += b' ' * (100 - len(mouse_msg))
 
-    keyboard_sock.send(keyboard_msg)
+    mouse_sock.send(mouse_msg)
 
-    confirm_msg = keyboard_sock.recv(100).decode(FORMAT).strip()
+    confirm_msg = mouse_sock.recv(100).decode(FORMAT).strip()
 
     listener = mouse.Listener(on_move=on_move,on_click=on_click,on_scroll=on_scroll)
     listener.start()
