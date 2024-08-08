@@ -210,7 +210,11 @@ def close_sockets():
     keyboard.close()
     mouse.close()
     print("closeing sockets")
+
+    global mouse_listen
     mouse_listen = False
+    
+    global keyboard_listen
     keyboard_listen = False
 
 
