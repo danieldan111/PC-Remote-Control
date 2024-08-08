@@ -172,20 +172,20 @@ def start_mouse():
         while mouse_listen:
             mouse_move = conn.recv(100).decode(FORMAT).strip()
             if mouse_move:
-                print(mouse_move)
                 mode = mouse_move[0:5]
-                print(mode)
-                mouse_move = mouse_move[5::]
+                mouse_move = mouse_move[6::]
                 if mode == "!MOVE":
                     x, y = mouse_move.split(",")
                     pos = (int(x) * x_ratio, int(y) * y_ratio)
                     mouse.position = (pos)
 
-                elif mode == "!CLICK":
+                elif mode == "!CLIK":
                     button, pressed = mouse_move.split(",")
+                    pressed = pressed == "True"
                     if pressed:
                         mouse.press(mouse_key_map[button])
                     else:
+                        print("relesigng", mouse_key_map[button])
                         mouse.release(mouse_key_map[button])
                     
 
