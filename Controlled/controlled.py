@@ -12,6 +12,7 @@ import pyautogui
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DIS_MSG"
 MY_IP = socket.gethostbyname(socket.gethostname())
+# MY_IP = "10.0.0.138"
 CONNECT_MSG = "!succses_connect"
 CONNECT_MSG_SCREEN = "!SCREEN_CONNECT"
 CONNECT_MSG_KEYBOARD = "!KEYBOARD_CONNECT"
