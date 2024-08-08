@@ -167,7 +167,8 @@ def start_mouse():
                 mouse_move = mouse_move[5::]
                 if mode == "!MOVE":
                     x, y = mouse_move.split(",")
-                    mouse.position(int(x), int(y))
+                    pos = (int(x), int(y))
+                    mouse.position = (pos)
 
                 elif mode == "!CLICK":
                     button, pressed = mouse_move.split(",")
