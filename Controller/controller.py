@@ -6,6 +6,8 @@ from PIL import *
 import cv2
 import numpy as np
 from pynput import keyboard
+import pyautogui
+
 
 
 HEADER = 64
@@ -56,22 +58,14 @@ def screen_watch():
                 image = cv2.imdecode(image_data, cv2.IMREAD_COLOR)
 
                 if image is not None:
-                    # Get the dimensions of the image
-                    # img_height, img_width = image.shape[:2]
                     
-                    # # Calculate the scale factor to fit the image to full screen
-                    screen_width = int(cv2.getWindowImageRect('').width)
-                    screen_height = int(cv2.getWindowImageRect('').height)
-
+                    screen_width, screen_height = pyautogui.size()
+                    
                     height, width, _ = image.shape
                     aspect_ratio = width / height
                     new_width = min(screen_width, int(screen_height * aspect_ratio))
                     new_height = min(screen_height, int(screen_width / aspect_ratio))
                     resized_img = cv2.resize(image, (new_width, new_height))
-
-                    # # Resize the image
-                    # resized_image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
-
 
                     cv2.namedWindow("Screen Viewer", cv2.WINDOW_NORMAL)
                     cv2.setWindowProperty("Screen Viewer", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
