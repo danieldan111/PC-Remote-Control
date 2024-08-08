@@ -18,10 +18,6 @@ CONNECT_MSG_KEYBOARD = "!KEYBOARD_CONNECT"
 
 
 
-
-
-
-#binding screen, keyboard and mouse:
 SCREEN_ADDR = (MY_IP, 5050)
 screen = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 screen.bind(SCREEN_ADDR)
@@ -33,6 +29,8 @@ keyboard.bind(KEYBOARD_ADDR)
 MOUSE_ADDR = (MY_IP, 5058)
 mouse = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 mouse.bind(MOUSE_ADDR)
+
+
 
 
 def start_screen():
@@ -197,6 +195,10 @@ def start_mouse():
         handle_mouse(conn, addr)
 
 
+def close_sockets():
+    screen.close()
+    keyboard.close()
+    mouse.close()
 
 
 def start_sockets():
@@ -208,9 +210,25 @@ def start_sockets():
     start_screen()
 
 
+
+def bind_sockets():
+    #binding screen, keyboard and mouse:
+    SCREEN_ADDR = (MY_IP, 5050)
+    screen = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    screen.bind(SCREEN_ADDR)
+
+    KEYBOARD_ADDR = (MY_IP, 5056)
+    keyboard = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    keyboard.bind(KEYBOARD_ADDR)
+
+    MOUSE_ADDR = (MY_IP, 5058)
+    mouse = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    mouse.bind(MOUSE_ADDR)
+    start_sockets()
+    
+
+
 start_sockets()
-
-
 
 
         

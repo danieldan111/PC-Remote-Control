@@ -27,6 +27,11 @@ MOUSE_ADDR = (SERVER, 5058)
 mouse_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 mouse_sock.connect(MOUSE_ADDR)
 
+def disconnect():
+    mouse_sock.close()
+    screen_sock.close()
+    keyboard_sock.close()
+
 
 def screen_watch():
     screen_msg = "SCREEN_connecting".encode(FORMAT)
@@ -77,6 +82,7 @@ def screen_watch():
                     # Handle window events
                     key = cv2.waitKey(1)
                     if key == 27:  # ESC key
+                        disconnect()
                         break
 
         except Exception as e:
