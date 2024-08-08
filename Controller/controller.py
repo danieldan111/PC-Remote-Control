@@ -10,7 +10,7 @@ from pynput.mouse import Button, Controller as mice
 
 HEADER = 64
 PORT = 5050
-SERVER = "10.0.0.17" #ip of the controlled device
+SERVER = "10.0.0.7" #ip of the controlled device
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DIS_MSG"
@@ -166,11 +166,10 @@ def mouse_share():
 
     def on_scroll(x, y, dx, dy):
         try:
-            click_mouse = f"!SCRL {dx},{dy}".encode(FORMAT)
-            click_mouse += b' ' * (100 - len(click_mouse))
-
+            scroll_mouse = f"!SCRL {dx},{dy}".encode(FORMAT)
+            scroll_mouse += b' ' * (100 - len(scroll_mouse))
             
-            mouse_sock.send(click_mouse)
+            mouse_sock.send(scroll_mouse)
         except Exception as e:
             return False
 

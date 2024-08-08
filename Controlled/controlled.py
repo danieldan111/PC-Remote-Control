@@ -195,6 +195,8 @@ def main():
                             mouse.release(mouse_key_map[button])
                     elif mode == "!SCRL":
                         dx, dy = mouse_move.split(",")
+                        dx = int(dx)
+                        dy = int(dy)
                         mouse.scroll(dx, dy)
                         
 
