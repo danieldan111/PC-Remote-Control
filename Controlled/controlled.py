@@ -59,8 +59,9 @@ def start_screen():
                 conn.sendall(data)
                 time.sleep(0.000001)
             except Exception as e:
-                print(f"Error capturing or sending screen: {e}")
-                break                                   
+                
+                screen_sharing = False
+                close_sockets()                                   
 
 
     screen.listen()
