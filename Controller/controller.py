@@ -155,7 +155,7 @@ def mouse_share():
     
     screen_width, screen_height = pyautogui.size()
 
-    size_ratio_msg = f"{screen_width}, {screen_height}"
+    size_ratio_msg = f"{screen_width}, {screen_height}".encode(FORMAT)
     size_ratio_msg += b' ' * (100 - len(size_ratio_msg))
     mouse_sock.send(size_ratio_msg)
 
