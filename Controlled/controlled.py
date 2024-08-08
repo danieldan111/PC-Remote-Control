@@ -214,6 +214,7 @@ def start_sockets():
     keyboard_thread = threading.Thread(target=start_keyboard)
     keyboard_thread.start()
     start_screen()
+    print("hello")
 
 
 
