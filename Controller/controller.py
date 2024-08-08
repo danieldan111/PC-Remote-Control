@@ -10,7 +10,7 @@ from pynput import keyboard
 
 HEADER = 64
 PORT = 5050
-SERVER = "10.0.0.21" #ip of the controlled device
+SERVER = "10.0.0.7" #ip of the controlled device
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DIS_MSG"
@@ -58,7 +58,7 @@ def screen_watch():
                 if image is not None:
                     # Get the dimensions of the image
                     # img_height, img_width = image.shape[:2]
-
+                    
                     # # Calculate the scale factor to fit the image to full screen
                     # screen_width = cv2.getWindowImageRect('Screen Viewer')[2]
                     # screen_height = cv2.getWindowImageRect('Screen Viewer')[3]
@@ -69,6 +69,9 @@ def screen_watch():
                     # # Resize the image
                     # resized_image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
 
+
+                    cv2.namedWindow("Screen Viewer", cv2.WINDOW_NORMAL)
+                    cv2.setWindowProperty("Screen Viewer", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
                     # Display the resized image
                     cv2.imshow('Screen Viewer', image)
 
