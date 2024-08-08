@@ -61,7 +61,8 @@ def start_screen():
             except Exception as e:
                 
                 screen_sharing = False
-                close_sockets()                                   
+                close_sockets()
+                return                                  
 
 
     screen.listen()
@@ -203,6 +204,7 @@ def close_sockets():
     screen.close()
     keyboard.close()
     mouse.close()
+    print("closeing sockets")
 
 
 def start_sockets():
