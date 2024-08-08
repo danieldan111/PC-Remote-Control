@@ -139,6 +139,7 @@ def mouse_share():
         click_mouse = f"!CLIK {button},{pressed}".encode(FORMAT)
         click_mouse += b' ' * (100 - len(click_mouse))
 
+        
         mouse_sock.send(click_mouse)
 
 

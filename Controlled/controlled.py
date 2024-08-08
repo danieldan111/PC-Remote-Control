@@ -172,7 +172,9 @@ def start_mouse():
         while mouse_listen:
             mouse_move = conn.recv(100).decode(FORMAT).strip()
             if mouse_move:
+                print(mouse_move)
                 mode = mouse_move[0:5]
+                print(mode)
                 mouse_move = mouse_move[5::]
                 if mode == "!MOVE":
                     x, y = mouse_move.split(",")
