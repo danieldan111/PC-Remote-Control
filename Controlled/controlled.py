@@ -116,6 +116,7 @@ def start_keyboard():
 
         
         while keyboard_listen:
+            print(keyboard_listen)
             key_stroke = conn.recv(100).decode(FORMAT).strip()
             if key_stroke:
                 mode = key_stroke[:6]
