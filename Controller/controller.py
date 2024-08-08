@@ -35,8 +35,51 @@ def screen_watch():
     screen_sharing = True
     while screen_sharing:
         #code
-        pass
+        try:
+            # Receive the size of the image
+            size_info = screen_sock.recv(4)
+            if not size_info:
+                break
+            size = int.from_bytes(size_info, 'big')
 
+            # Receive the image data
+            data = b''
+            while len(data) < size:
+                packet = screen_sock.recv(size - len(data))
+                if not packet:
+                    break
+                data += packet
+
+            if data:
+                # Convert the byte data to a numpy array and then decode it
+                image_data = np.frombuffer(data, dtype=np.uint8)
+                image = cv2.imdecode(image_data, cv2.IMREAD_COLOR)
+
+                if image is not None:
+                    # Get the dimensions of the image
+                    img_height, img_width = image.shape[:2]
+
+                    # Calculate the scale factor to fit the image to full screen
+                    screen_width = cv2.getWindowImageRect('Screen Viewer')[2]
+                    screen_height = cv2.getWindowImageRect('Screen Viewer')[3]
+                    scale_factor = min(screen_width / img_width, screen_height / img_height)
+                    new_width = int(img_width * scale_factor)
+                    new_height = int(img_height * scale_factor)
+
+                    # Resize the image
+                    resized_image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+
+                    # Display the resized image
+                    cv2.imshow('Screen Viewer', resized_image)
+
+                    # Handle window events
+                    key = cv2.waitKey(1)
+                    if key == 27:  # ESC key
+                        break
+
+        except Exception as e:
+            print(f"Error receiving or displaying image: {e}")
+            break
 
 
 def keyboard_share():

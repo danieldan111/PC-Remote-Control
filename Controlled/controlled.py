@@ -48,9 +48,21 @@ def start_screen():
 
         screen_sharing = True
         while screen_sharing:
-            #code
+            try:
+                screenshot = ImageGrab.grab()
+                buffer = io.BytesIO()
+                screenshot.save(buffer, format='JPEG', quality=100)  # Adjust JPEG quality here
+                data = buffer.getvalue()
 
-            time.sleep(0.000001)
+                # Send the size of the image first
+                size_info = len(data).to_bytes(4, 'big')
+                conn.send(size_info)
+
+                conn.sendall(data)
+                time.sleep(0.000001)
+            except Exception as e:
+                print(f"Error capturing or sending screen: {e}")
+                break
 
 
     screen.listen()
