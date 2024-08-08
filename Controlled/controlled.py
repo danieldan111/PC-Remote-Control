@@ -116,7 +116,6 @@ def start_keyboard():
 
         
         while keyboard_listen:
-            print(keyboard_listen)
             key_stroke = conn.recv(100).decode(FORMAT).strip()
             if key_stroke:
                 mode = key_stroke[:6]
@@ -209,13 +208,13 @@ def close_sockets():
     screen.close()
     keyboard.close()
     mouse.close()
-    print("closeing sockets")
 
     global mouse_listen
     mouse_listen = False
     
     global keyboard_listen
     keyboard_listen = False
+
 
 
 def start_sockets():
@@ -248,7 +247,8 @@ def bind_sockets():
 
 
 start_sockets()
-print("program finished?")
+
+bind_sockets()
 
 
         
