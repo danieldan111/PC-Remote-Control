@@ -30,9 +30,9 @@ KEYBOARD_ADDR = (MY_IP, 5056)
 keyboard = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 keyboard.bind(KEYBOARD_ADDR)
 
-# MOUSE_ADDR = (MY_IP, 5058)
-# mouse = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# mouse.bind(KEYBOARD_ADDR)
+MOUSE_ADDR = (MY_IP, 5058)
+mouse = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+mouse.bind(KEYBOARD_ADDR)
 
 
 def start_screen():
@@ -143,8 +143,39 @@ def start_keyboard():
         handle_keyboard(conn, addr)
 
 
+def start_mouse():
+    def handle_mouse(conn, addr):
+        confirm_msg = conn.recv(100).decode(FORMAT)
+
+        print(confirm_msg)
+
+        confirm_back = "mouse connected".encode(FORMAT)
+        confirm_back += b' ' * (100 - len(confirm_back))
+
+        conn.send(confirm_back)
+
+        mouse_listen = True
+        while mouse_listen:
+            mouse_move = conn.recv(100).decode(FORMAT).strip()
+            if mouse_move:
+                x, y = mouse_move.split(",")
+                print(f"{x},{y}")
+
+
+
+    mouse.listen()
+    print(f"[LISTENING] Mouse is listnening on {MY_IP}")
+    while True:
+        conn, addr = mouse.accept()
+        handle_mouse(conn, addr)
+
+
+
+
 def start_sockets():
-    # start_keyboard()
+    mouse_thread = threading.Thread(target=start_mouse)
+    mouse_thread.start()
+
     keyboard_thread = threading.Thread(target=start_keyboard)
     keyboard_thread.start()
     start_screen()

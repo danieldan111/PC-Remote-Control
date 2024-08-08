@@ -1,11 +1,9 @@
-from PIL import Image,ImageTk #pip install pillow
-import time
 import threading
 import socket
-from PIL import *
+from PIL import *  #pip install pillow
 import cv2
 import numpy as np
-from pynput import keyboard
+from pynput import keyboard, mouse
 import pyautogui
 
 
@@ -24,6 +22,10 @@ keyboard_sock.connect(KEYBOARD_ADDR)
 SCREEN_ADDR = (SERVER, 5050)
 screen_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 screen_sock.connect(SCREEN_ADDR)
+
+SCREEN_ADDR = (SERVER, 5058)
+mouse_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+mouse_sock.connect(SCREEN_ADDR)
 
 
 def screen_watch():
@@ -125,7 +127,39 @@ def keyboard_share():
     listner.join()
 
        
+def mouse_share():
+    def on_move(x, y):
+        move_mouse = f"{x} , {y}".encode(FORMAT)
+        move_mouse += b' ' * (100 - len(move_mouse))
+
+        mouse_sock.send(move_mouse)
+
+
+    def on_click(x, y, button, pressed):
+        pass
+
+
+    def on_scroll(x, y, dx, dy):
+        pass
+
+
+    keyboard_msg = "MOUSE_connecting".encode(FORMAT)
+    keyboard_msg += b' ' * (100 - len(keyboard_msg))
+
+    keyboard_sock.send(keyboard_msg)
+
+    confirm_msg = keyboard_sock.recv(100).decode(FORMAT).strip()
+
+    listener = mouse.Listener(on_move=on_move,on_click=on_click,on_scroll=on_scroll)
+    listener.start()
+
+
+
+
 keyboard_thread = threading.Thread(target=keyboard_share)
 keyboard_thread.start()
+
+mouse_thread = threading.Thread(target=mouse_share)
+mouse_thread.start()
 
 screen_watch()
