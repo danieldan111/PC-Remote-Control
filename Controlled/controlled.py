@@ -157,6 +157,8 @@ def start_mouse():
 
         mouse = mice()
 
+        mouse.position = (0,0)
+        
         mouse_listen = True
 
         mouse_key_map = {"Button.left" : Button.left, "Button.right": Button.right}
