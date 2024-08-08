@@ -32,6 +32,10 @@ def disconnect():
     screen_sock.close()
     keyboard_sock.close()
 
+    cv2.destroyAllWindows()
+
+    
+
 
 def screen_watch():
     screen_msg = "SCREEN_connecting".encode(FORMAT)
@@ -104,6 +108,8 @@ def keyboard_share():
             press_key += b' ' * (100 - len(press_key))
             keyboard_sock.send(press_key)
 
+        except Exception as e:
+            return False
 
     def on_release(key):
         try:
@@ -114,11 +120,14 @@ def keyboard_share():
 
             
         except AttributeError:
-            press_key = "!RELIS ".encode(FORMAT)
-            press_key += str(key).encode(FORMAT)
-            press_key += b' ' * (100 - len(press_key))
-            keyboard_sock.send(press_key)
-    
+            try:
+                press_key = "!RELIS ".encode(FORMAT)
+                press_key += str(key).encode(FORMAT)
+                press_key += b' ' * (100 - len(press_key))
+                keyboard_sock.send(press_key)
+
+            except Exception as e:
+                return False
 
     keyboard_msg = "KEYBOARD_connecting".encode(FORMAT)
     keyboard_msg += b' ' * (100 - len(keyboard_msg))
@@ -135,18 +144,24 @@ def keyboard_share():
        
 def mouse_share():
     def on_move(x, y):
-        move_mouse = f"!MOVE {x} , {y}".encode(FORMAT)
-        move_mouse += b' ' * (100 - len(move_mouse))
+        try:
+            move_mouse = f"!MOVE {x} , {y}".encode(FORMAT)
+            move_mouse += b' ' * (100 - len(move_mouse))
 
-        mouse_sock.send(move_mouse)
+            mouse_sock.send(move_mouse)
+        except Exception as e:
+            return False
 
 
     def on_click(x, y, button, pressed):
-        click_mouse = f"!CLIK {button},{pressed}".encode(FORMAT)
-        click_mouse += b' ' * (100 - len(click_mouse))
+        try:
+            click_mouse = f"!CLIK {button},{pressed}".encode(FORMAT)
+            click_mouse += b' ' * (100 - len(click_mouse))
 
-        
-        mouse_sock.send(click_mouse)
+            
+            mouse_sock.send(click_mouse)
+        except Exception as e:
+            return False
 
 
     def on_scroll(x, y, dx, dy):
