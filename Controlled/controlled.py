@@ -26,9 +26,9 @@ SCREEN_ADDR = (MY_IP, 5050)
 screen = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 screen.bind(SCREEN_ADDR)
 
-# KEYBOARD_ADDR = (MY_IP, 5056)
-# keyboard = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# keyboard.bind(KEYBOARD_ADDR)
+KEYBOARD_ADDR = (MY_IP, 5056)
+keyboard = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+keyboard.bind(KEYBOARD_ADDR)
 
 # MOUSE_ADDR = (MY_IP, 5058)
 # mouse = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -62,7 +62,7 @@ def start_screen():
                 time.sleep(0.000001)
             except Exception as e:
                 print(f"Error capturing or sending screen: {e}")
-                break
+                break                                   
 
 
     screen.listen()
@@ -145,8 +145,8 @@ def start_keyboard():
 
 def start_sockets():
     # start_keyboard()
-    # keyboard_thread = threading.Thread(target=start_keyboard)
-    # keyboard_thread.start()
+    keyboard_thread = threading.Thread(target=start_keyboard)
+    keyboard_thread.start()
     start_screen()
 
 
