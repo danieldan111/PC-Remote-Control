@@ -157,6 +157,8 @@ def mouse_share():
     
     mouse.position = (0, 0)
     
+    del mouse
+    
     listener = mouse.Listener(on_move=on_move,on_click=on_click,on_scroll=on_scroll)
     listener.start()
     listener.join()
