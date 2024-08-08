@@ -132,6 +132,8 @@ def mouse_share():
         move_mouse = f"{x} , {y}".encode(FORMAT)
         move_mouse += b' ' * (100 - len(move_mouse))
 
+        print(move_mouse)
+
         mouse_sock.send(move_mouse)
 
 
@@ -152,7 +154,7 @@ def mouse_share():
 
     listener = mouse.Listener(on_move=on_move,on_click=on_click,on_scroll=on_scroll)
     listener.start()
-
+    listener.join()
 
 
 
