@@ -129,16 +129,17 @@ def keyboard_share():
        
 def mouse_share():
     def on_move(x, y):
-        move_mouse = f"{x} , {y}".encode(FORMAT)
+        move_mouse = f"!MOVE {x} , {y}".encode(FORMAT)
         move_mouse += b' ' * (100 - len(move_mouse))
-
-        print(move_mouse)
 
         mouse_sock.send(move_mouse)
 
 
     def on_click(x, y, button, pressed):
-        pass
+        click_mouse = f"!CLIK {button},{pressed}".encode(FORMAT)
+        click_mouse += b' ' * (100 - len(click_mouse))
+
+        mouse_sock.send(click_mouse)
 
 
     def on_scroll(x, y, dx, dy):

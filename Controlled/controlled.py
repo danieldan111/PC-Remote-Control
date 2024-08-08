@@ -5,7 +5,8 @@ from tkinter import *
 import time
 import threading
 import io
-from pynput.keyboard import Key, Controller
+from pynput.keyboard import Key, Controller as board
+from pynput.mouse import Button, Controller as mice
 
 
 
@@ -109,7 +110,7 @@ def start_keyboard():
             "♥": "c"
         }
         keyboard_listen = True
-        keyboard = Controller()
+        keyboard = board()
 
         while keyboard_listen:
             key_stroke = conn.recv(100).decode(FORMAT).strip()
@@ -154,12 +155,27 @@ def start_mouse():
 
         conn.send(confirm_back)
 
+        mouse = mice()
+
         mouse_listen = True
+
+        mouse_key_map = {"Button.left" : Button.left, "Button.right": Button.right}
         while mouse_listen:
             mouse_move = conn.recv(100).decode(FORMAT).strip()
             if mouse_move:
-                x, y = mouse_move.split(",")
-                print(f"{x},{y}")
+                mode = mouse_move[0:5]
+                mouse_move = mouse_move[5::]
+                if mode == "!MOVE":
+                    x, y = mouse_move.split(",")
+                    mouse.position(int(x), int(y))
+
+                elif mode == "!CLICK":
+                    button, pressed = mouse_move.split(",")
+                    if pressed:
+                        mouse.press(mouse_key_map[button])
+                    else:
+                        mouse.release(mouse_key_map[button])
+                    
 
 
 
