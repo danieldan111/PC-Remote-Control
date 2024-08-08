@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 from pynput import keyboard, mouse
 import pyautogui
-
+from pynput.mouse import Button, Controller as mice
 
 
 HEADER = 64
@@ -153,6 +153,10 @@ def mouse_share():
 
     confirm_msg = mouse_sock.recv(100).decode(FORMAT).strip()
 
+    mouse = mice()
+    
+    mouse.position = (0, 0)
+    
     listener = mouse.Listener(on_move=on_move,on_click=on_click,on_scroll=on_scroll)
     listener.start()
     listener.join()
