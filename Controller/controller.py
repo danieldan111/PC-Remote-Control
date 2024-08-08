@@ -152,13 +152,14 @@ def mouse_share():
     mouse_sock.send(mouse_msg)
 
     confirm_msg = mouse_sock.recv(100).decode(FORMAT).strip()
+    
+    screen_width, screen_height = pyautogui.size()
 
-    mouse = mice()
-    
-    mouse.position = (0, 0)
-    
-    del mouse
-    
+    size_ratio_msg = f"{screen_width}, {screen_height}"
+    size_ratio_msg += b' ' * (100 - len(size_ratio_msg))
+    mouse_sock.send(size_ratio_msg)
+
+
     listener = mouse.Listener(on_move=on_move,on_click=on_click,on_scroll=on_scroll)
     listener.start()
     listener.join()

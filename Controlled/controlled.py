@@ -1,13 +1,12 @@
 import socket
 from PIL import ImageGrab #pip install pillow
-import os
 from tkinter import *
 import time
 import threading
 import io
 from pynput.keyboard import Key, Controller as board
 from pynput.mouse import Button, Controller as mice
-
+import pyautogui
 
 
 FORMAT = 'utf-8'
@@ -157,8 +156,16 @@ def start_mouse():
 
         mouse = mice()
 
-        mouse.position = (0,0)
-        
+        my_width, my_height = pyautogui.size()
+         
+        other_width ,other_height = conn.recv(100).decode(FORMAT).split(",")
+        other_height = int(other_height)
+        other_width = int(other_width) 
+                            
+
+        x_ratio = other_width / my_width
+        y_ratio = other_height / my_height
+
         mouse_listen = True
 
         mouse_key_map = {"Button.left" : Button.left, "Button.right": Button.right}
@@ -169,7 +176,7 @@ def start_mouse():
                 mouse_move = mouse_move[5::]
                 if mode == "!MOVE":
                     x, y = mouse_move.split(",")
-                    pos = (int(x), int(y))
+                    pos = (int(x) * x_ratio, int(y) * y_ratio)
                     mouse.position = (pos)
 
                 elif mode == "!CLICK":
