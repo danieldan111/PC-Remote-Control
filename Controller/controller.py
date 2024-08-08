@@ -60,11 +60,14 @@ def screen_watch():
                     # img_height, img_width = image.shape[:2]
                     
                     # # Calculate the scale factor to fit the image to full screen
-                    # screen_width = cv2.getWindowImageRect('Screen Viewer')[2]
-                    # screen_height = cv2.getWindowImageRect('Screen Viewer')[3]
-                    # scale_factor = min(screen_width / img_width, screen_height / img_height)
-                    # new_width = int(img_width * scale_factor)
-                    # new_height = int(img_height * scale_factor)
+                    screen_width = int(cv2.getWindowImageRect('').width)
+                    screen_height = int(cv2.getWindowImageRect('').height)
+
+                    height, width, _ = image.shape
+                    aspect_ratio = width / height
+                    new_width = min(screen_width, int(screen_height * aspect_ratio))
+                    new_height = min(screen_height, int(screen_width / aspect_ratio))
+                    resized_img = cv2.resize(image, (new_width, new_height))
 
                     # # Resize the image
                     # resized_image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
@@ -73,8 +76,8 @@ def screen_watch():
                     cv2.namedWindow("Screen Viewer", cv2.WINDOW_NORMAL)
                     cv2.setWindowProperty("Screen Viewer", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
                     # Display the resized image
-                    cv2.imshow('Screen Viewer', image)
-
+                    cv2.imshow('Screen Viewer', resized_img)
+                    
                     # Handle window events
                     key = cv2.waitKey(1)
                     if key == 27:  # ESC key
