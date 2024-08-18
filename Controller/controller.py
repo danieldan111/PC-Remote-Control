@@ -10,7 +10,7 @@ from pynput.mouse import Button, Controller as mice
 
 HEADER = 64
 PORT = 5050
-SERVER = "84.229.209.209" #ip of the controlled device
+SERVER = "xxxxxxx" #ip of the controlled device
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DIS_MSG"
